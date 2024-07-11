@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
 import inspect
+import os
 
 # Function to load data
 @st.cache_data
@@ -15,9 +16,11 @@ def load_data(uploaded_file):
 def calculate_remaining_percentage(age):
     return np.exp(-0.0903 * age + 4.3994)  # No need to multiply by 100
 
-# Function to get the source code
-def get_source_code():
-    return inspect.getsource(main)
+# Function to get the full source code
+def get_full_source_code():
+    current_file = inspect.getfile(inspect.currentframe())
+    with open(current_file, "r") as file:
+        return file.read()
 
 # Main function to run the Streamlit app
 def main():
@@ -111,9 +114,9 @@ def main():
     else:
         st.info("Please upload a CSV file to begin the analysis.")
 
-    # Display the source code
-    st.header("8. Source Code")
-    st.code(get_source_code(), language="python")
+    # Display the full source code
+    st.header("8. Full Source Code")
+    st.code(get_full_source_code(), language="python")
 
 if __name__ == "__main__":
     main()
